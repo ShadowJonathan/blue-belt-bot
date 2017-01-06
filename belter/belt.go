@@ -1,7 +1,10 @@
 package Belt
 
-import "github.com/bwmarrin/discordgo"
-import "fmt"
+import (
+	fmt "fmt"
+
+	"github.com/bwmarrin/discordgo"
+)
 
 type Version struct {
 	Major               byte
@@ -19,17 +22,18 @@ type BlueBot struct {
 // Vars after this
 
 var bbb *BlueBot
+var err error
 
 // Functions after this
 
 func Initialize(Token string) {
-	bbb = &Bluebot{
+	bbb = &BlueBot{
 		version: Version{0, 0, 1, true, 1},
 	}
 
-	bbb.dg, err = discordgo.New(Token)
+	bbb.dg, err = discordgo.New("BOT " + Token)
 	if err != nil {
-		fmt.Printl("Discord Session error, check token, error message: " + err.Error())
+		fmt.Println("Discord Session error, check token, error message: " + err.Error())
 		return
 	}
 }
