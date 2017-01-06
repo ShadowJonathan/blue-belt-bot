@@ -43,25 +43,21 @@ func BBReady(s *discordgo.Session, r *discordgo.Ready) {
 }
 
 func Initialize(Token string) {
-	var BotFunc = "bot"
 	isdebug, err := ioutil.ReadFile("debugtoggle")
 	bbb = &BlueBot{
 		version: Version{0, 0, 1, true, 1},
 		Debug:   (err == nil && len(isdebug) > 0),
+		Stop:    false,
 	}
-	switch BotFunc {
-	case "bot":
-		bbb.dg, err = discordgo.New("BOT " + Token)
-	case "user":
-		bbb.dg, err = discordgo.New(Token)
-	}
-	bbb.dg, err = discordgo.New("BOT " + Token)
+	bbb.dg, err = discordgo.New("Bot " + Token)
 	if err != nil {
 		fmt.Println("Discord Session error, check token, error message: " + err.Error())
 		return
 	}
 	// handlers
 	bbb.dg.AddHandler(BBReady)
+
+	fmt.Println("BB: Handlers installed")
 
 	err = bbb.dg.Open()
 	if err == nil {
