@@ -1,7 +1,7 @@
 # blue-belt-bot
 Universal Discord bot written in GoLang
 
-**Note: Blue Belt Bot is still in a experimental version, concider helping the project or using another bot for your administrative needs.**
+**Note: Blue Belt Bot is still in a experimental stage, concider helping the project or using another bot for your administrative needs.**
 
 Install git and go before downloading and compiling this bot, and run `go get github.com/bwmarrin/discordgo` in any command processor.
 
