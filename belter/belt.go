@@ -45,7 +45,7 @@ func BBReady(s *discordgo.Session, r *discordgo.Ready) {
 func Initialize(Token string) {
 	isdebug, err := ioutil.ReadFile("debugtoggle")
 	bbb = &BlueBot{
-		version: Version{0, 0, 1, true, 1},
+		version: Version{0, 1, 0, false, 0},
 		Debug:   (err == nil && len(isdebug) > 0),
 		Stop:    false,
 	}
