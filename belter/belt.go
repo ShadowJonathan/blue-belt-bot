@@ -48,8 +48,8 @@ func BBMessageCreate(Ses *discordgo.Session, MesC *discordgo.MessageCreate) {
 	// stuff here
 	Mes := MesC.Message
 
-	CI := SwitchCMDType(Mes)
-	if CI == nil {
+	CI, IsCMD := SwitchCMDType(Mes)
+	if IsCMD == false {
 		return
 	}
 	switch CI {

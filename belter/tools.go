@@ -35,30 +35,30 @@ func DownloadUrl(URL string, filepath string) error {
 	return nil
 }
 
-func CheckPCh(m *discordgo.Message) {
+func CheckPCh(m *discordgo.Message) bool {
 	return CheckPrivateChannel(m.ChannelID)
 }
 
-func CheckPrivateChannel(Ch string) { // probably very innefficient, but whatever
-	return bbb.dg.State.Channel(Ch).IsPrivate
+func CheckPrivateChannel(Ch string) bool { // probably very innefficient, but whatever
+	Chstate, _ := bbb.dg.State.Channel(Ch)
+	return Chstate.IsPrivate
 }
 
-func SwitchCMDType(m *discordgo.Message) int {
+func SwitchCMDType(m *discordgo.Message) (int, bool) {
 	MC := m.Content
 	switch MC[0] {
 	case '!':
-		return 0
-	case ' ' || '\t' || '\r':
+		return 0, false
+	case ' ':
 		if MC[1] == '!' {
-			return 1
+			return 1, false
 		}
 	case '>':
-		return 2
+		return 2, false
 	case '?':
-		return 3
-	default:
-		return nil
+		return 3, false
 	}
+	return -1, true
 }
 
 func GetArgs(S string) []string {
@@ -68,9 +68,9 @@ func GetArgs(S string) []string {
 		Letter := S[i]
 		if !IsSpace(Letter) {
 			var startCMD int
-			start = i
+			startCMD = i
 			i++
-			for i < Length && IsSpace(s[i]) {
+			for i < Length && IsSpace(S[i]) {
 				i++
 			}
 			Args = append(Args, S[startCMD:i])
