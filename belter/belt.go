@@ -35,12 +35,38 @@ var BotFunc string
 
 // Functions after this
 
+// Handlers
+
 func BBReady(s *discordgo.Session, r *discordgo.Ready) {
 	bbb.OwnID = r.User.ID
 	bbb.OwnAV = r.User.Avatar
 	bbb.OwnName = r.User.Username
 	fmt.Println("Discord: Ready message received\nBB: I am '" + bbb.OwnName + "'!\nBB: My User ID: " + bbb.OwnID)
 }
+
+func BBMessageCreate(Ses *discordgo.Session, MesC *discordgo.MessageCreate) {
+	// stuff here
+	Mes := MesC.Message
+
+	CI := SwitchCMDType(Mes)
+	if CI == nil {
+		return
+	}
+	switch CI {
+	case '0':
+		Processcommand(Mes)
+	case '1':
+		Mesedit := Mes
+		Mesedit.Content = Mesedit.Content[1:]
+		Processcommand(Mesedit)
+	case '2':
+		ProcessCMD(Mes)
+	case '3':
+		ProcessQuery(Mes)
+	}
+}
+
+// init
 
 func Initialize(Token string) {
 	isdebug, err := ioutil.ReadFile("debugtoggle")

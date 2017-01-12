@@ -8,17 +8,17 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
-func Processcommand(m *discordgo.Message, g *discordgo.Guild) {
-	if m.Content[0] == '!' || (m.Content[0] == ' ' && m.Content[1] == '!') {
-		var args []string
-		var CMD string
-		if m.Content[0] == '!' {
-			args = GetArgs(m.Content[1:])
-		} else {
-			if m.Content[1] == '!' {
-				args = GetArgs(m.Content[2:])
-			}
-		}
-		CMD = strings.ToLower(args[0])
-	}
+func Processcommand(m *discordgo.Message) {
+	args = GetArgs(m.Content[1:])
+	CMD = strings.ToLower(args[0])
+}
+
+func ProcessCMD(m *discordgo.Message) {
+	Args := GetArgs(m.Content[1:])
+	CMD := Args[0]
+}
+
+func ProcessQuery(m *discordgo.Message) {
+	Args := GetArgs(m.Content[1:])
+	QU := Args[0]
 }

@@ -4,6 +4,8 @@ import (
 	"io"
 	"net/http"
 	"os"
+
+	"github.com/bwmarrin/discordgo"
 )
 
 func IsSpace(L byte) bool {
@@ -31,6 +33,32 @@ func DownloadUrl(URL string, filepath string) error {
 		return err
 	}
 	return nil
+}
+
+func CheckPCh(m *discordgo.Message) {
+	return CheckPrivateChannel(m.ChannelID)
+}
+
+func CheckPrivateChannel(Ch string) { // probably very innefficient, but whatever
+	return bbb.dg.State.Channel(Ch).IsPrivate
+}
+
+func SwitchCMDType(m *discordgo.Message) int {
+	MC := m.Content
+	switch MC[0] {
+	case '!':
+		return 0
+	case ' ' || '\t' || '\r':
+		if MC[1] == '!' {
+			return 1
+		}
+	case '>':
+		return 2
+	case '?':
+		return 3
+	default:
+		return nil
+	}
 }
 
 func GetArgs(S string) []string {
