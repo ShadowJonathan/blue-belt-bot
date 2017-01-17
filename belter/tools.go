@@ -78,3 +78,12 @@ func GetArgs(S string) []string {
 	}
 	return Args
 }
+
+func GetBot(B *discordgo.User) *BotInfo {
+	for _, SB := range bbb.SeenBots {
+		if SB.BotID == B.ID {
+			return SB
+		}
+	} // if no bot was found
+
+}

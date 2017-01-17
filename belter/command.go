@@ -26,3 +26,40 @@ func ProcessQuery(m *discordgo.Message) {
 	QU := Args[0]
 	fmt.Println(QU + " Queried")
 }
+
+// more commands for bots
+
+// ? Query
+func PCQ(m *discordgo.Message, Bot *BotInfo) {
+
+}
+
+// ! Notice
+
+func PCN(m *discordgo.Message, Bot *BotInfo) {
+
+}
+
+// % Evaluate
+
+func PEVAL(m *discordgo.Message, Bot *BotInfo) {
+
+}
+
+// > Push
+
+func PCPUSH(m *discordgo.Message, Bot *BotInfo) {
+
+}
+
+// < Pull
+
+func PCPULL(m *discordgo.Message, Bot *BotInfo) {
+
+}
+
+// ^ Get info
+
+func PCGET(m *discordgo.Message, Bot *BotInfo) {
+
+}
