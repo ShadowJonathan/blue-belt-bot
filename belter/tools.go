@@ -88,6 +88,10 @@ func GetArgs(S string) []string {
 	return Args
 }
 
+func FindProxy(ID string) string {
+
+}
+
 func GetBot(B *discordgo.User) (*BotInfo, bool) {
 	for _, SB := range bbb.SeenBots {
 		if SB.BotID == B.ID {

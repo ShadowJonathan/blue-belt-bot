@@ -33,7 +33,8 @@ type MasterInfo struct {
 	ID               string
 	DMChannel        string
 	Fullname         string
-	directconnection bool // aka, have a "friendship" open with master
+	directconnection bool // aka, have a server shared with master
+	Proxy            string
 }
 
 type BotInfo struct {
@@ -62,4 +63,15 @@ type Session struct {
 	OtherSession byte
 	OwnSession   byte
 	SessionSync  bool
+}
+
+type proxy struct {
+	ID                  string
+	incontactIDs        []string
+	incontactwithmaster bool
+}
+
+type rememberedproxy struct {
+	ID     string
+	target string
 }

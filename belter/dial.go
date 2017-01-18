@@ -23,21 +23,55 @@ func DailLoop(HookID string, finishchannel byte) {
 	DAILCLOSE(HookID, finishchannel)
 }
 
+func RELAY(CMD string, CMDTYPE byte, relayID string, waitforresponse bool, relayto string, relayfrom string) (bool, bool, string) { // success waitedforresponse response
+	Dsuccess := DAIL(relayID)
+	if !Dsuccess {
+		var err = "DAIL FAIL"
+		return false, false, err
+	}
+	Ses := bbb.Sessions[relayID]
+	var Ch byte
+	if Ses.IsOpener || Ses.SessionSync {
+		Ch = Ses.OwnSession
+	} else {
+		Ch = Ses.OtherSession
+	}
+	Channel, _ := GetUserChannel(relayID)
+	if relayfrom == "0" {
+		bbb.dg.ChannelMessageSend(Channel.ID, string(Ch)+"&"+relayto+" "+relayfrom+" "+string(CMDTYPE)+CMD)
+	}
+	if !waitforresponse {
+		return true, false, ""
+	}
+	response := GFS(BtN(Ch))
+	return true, true, response
+}
+
 func QUERY(CMD string, MASTER bool, ID string) (string, string) { // single query
 	if MASTER {
-		Dsuccess := DAIL(bbb.Master.ID)
+		MasterID := bbb.Master.ID
+		UseProxy := false
+		if bbb.Master.directconnection == false {
+			MasterID = bbb.Master.Proxy
+			UseProxy = true
+		}
+		Dsuccess := DAIL(MasterID)
 		if !Dsuccess {
 			var err = "DAIL FAIL"
 			return "", err
 		}
-		Ses := bbb.Sessions[bbb.Master.ID]
+		Ses := bbb.Sessions[MasterID]
 		var Ch byte
 		if Ses.IsOpener || Ses.SessionSync {
 			Ch = Ses.OwnSession
 		} else {
 			Ch = Ses.OtherSession
 		}
-		bbb.dg.ChannelMessageSend(bbb.Master.DMChannel, string(Ch)+"?"+CMD)
+		if UseProxy {
+			bbb.dg.ChannelMessageSend(bbb.Master.DMChannel, string(Ch)+"&"+"MASTER"+" ?"+CMD)
+		} else {
+			bbb.dg.ChannelMessageSend(bbb.Master.DMChannel, string(Ch)+"?"+CMD)
+		}
 		response := GFS(BtN(Ch))
 		return response, ""
 
@@ -82,19 +116,9 @@ func DAIL(ID string) bool {
 			addBot(Bot)
 		}
 	} else {
-		yes, timeout := WaitForFriendship(ID)
-		if !yes {
-			if timeout {
-				return false
-			} else { // this should NEVER happen
-				panic(yes)
-			}
-		}
-		Bot, frommaster := GetBot(User)
-		if frommaster {
-			addBot(Bot)
-		}
+		return false
 	}
+
 	Ch, err := GetUserChannel(ID)
 	if err.Error() == "" {
 		bbb.dg.ChannelMessageSend(Ch.ID, ToLetter(Session)+">open")

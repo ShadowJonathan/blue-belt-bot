@@ -56,6 +56,11 @@ func BBMessageCreate(Ses *discordgo.Session, MesC *discordgo.MessageCreate) {
 			bbb.SessionFour <- Mes.Content
 		}
 	}
+
+	if Mes.Author.Bot {
+		SwitchBotCommand(Mes, "")
+		return
+	}
 	CI, IsCMD := SwitchCMDType(Mes)
 	if IsCMD == false {
 		return
